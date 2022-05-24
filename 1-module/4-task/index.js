@@ -9,5 +9,3 @@ function checkSpam(str) {
     return true;
   } else return false;
 }
-
-console.log(checkSpam(" go down"));
