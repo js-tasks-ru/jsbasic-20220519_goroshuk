@@ -1,11 +1,8 @@
 function getMinMax(str) {
-  let array = str
-    .split(" ")
-    .filter((item) => isFinite(item))
-    .sort((a, b) => a - b);
+  let array = str.split(" ").filter((item) => isFinite(item));
 
   return (result = {
-    min: Number(array[0]),
-    max: Number(array[array.length - 1]),
+    min: Math.min(...array),
+    max: Math.max(...array),
   });
 }
