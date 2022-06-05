@@ -3,9 +3,9 @@ function highlight(table) {
 
   for (let i = 1; i < statusSelector.length; i++) {
     statusSelector[i].cells[2].innerHTML == "m"
-      ? (statusSelector[i].className = "male")
+      ? statusSelector[i].classList.add("male")
       : statusSelector[i].cells[2].innerHTML == "f"
-      ? (statusSelector[i].className = "female")
+      ? statusSelector[i].classList.add("female")
       : statusSelector[i].cells[2];
   }
 
