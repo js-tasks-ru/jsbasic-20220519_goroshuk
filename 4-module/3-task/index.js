@@ -1,5 +1,5 @@
 function highlight(table) {
-  let statusSelector = document.body.querySelectorAll("tr");
+  let statusSelector = table.querySelectorAll("tr");
 
   for (let i = 1; i < statusSelector.length; i++) {
     statusSelector[i].cells[2].innerHTML == "m"
