@@ -1,6 +1,6 @@
-describe('4-module-3-task', () => {
-  it('Проставит класс available/unavailable, в зависимости от значения атрибута data-available у ячейки Status', () => {
-    const table = document.createElement('table');
+describe("4-module-3-task", () => {
+  it("Проставит класс available/unavailable, в зависимости от значения атрибута data-available у ячейки Status", () => {
+    const table = document.createElement("table");
 
     table.innerHTML = `
             <thead>
@@ -28,15 +28,23 @@ describe('4-module-3-task', () => {
         `;
 
     highlight(table);
-    expect(table.querySelector('.js-first').classList.contains('available')).toEqual(true);
-    expect(table.querySelector('.js-first').classList.contains('unavailable')).toEqual(false);
+    expect(
+      table.querySelector(".js-first").classList.contains("available")
+    ).toEqual(true);
+    expect(
+      table.querySelector(".js-first").classList.contains("unavailable")
+    ).toEqual(false);
 
-    expect(table.querySelector('.js-second').classList.contains('available')).toEqual(false);
-    expect(table.querySelector('.js-second').classList.contains('unavailable')).toEqual(true);
+    expect(
+      table.querySelector(".js-second").classList.contains("available")
+    ).toEqual(false);
+    expect(
+      table.querySelector(".js-second").classList.contains("unavailable")
+    ).toEqual(true);
   });
 
-  it('Проставит аттрибут hidden, если  data-available атрибута нет вообще', () => {
-    const table = document.createElement('table');
+  it("Проставит аттрибут hidden, если  data-available атрибута нет вообще", () => {
+    const table = document.createElement("table");
 
     table.innerHTML = `
             <thead>
@@ -58,11 +66,13 @@ describe('4-module-3-task', () => {
         `;
 
     highlight(table);
-    expect(table.querySelector('.js-first').hasAttribute('hidden')).toEqual(true);
+    expect(table.querySelector(".js-first").hasAttribute("hidden")).toEqual(
+      true
+    );
   });
 
-  it('Проставит класс male/female, в зависимости от содержимого ячекйки Gender', () => {
-    const table = document.createElement('table');
+  it("Проставит класс male/female, в зависимости от содержимого ячекйки Gender", () => {
+    const table = document.createElement("table");
 
     table.innerHTML = `
             <thead>
@@ -90,12 +100,16 @@ describe('4-module-3-task', () => {
         `;
 
     highlight(table);
-    expect(table.querySelector('.js-first').classList.contains('male')).toEqual(true);
-    expect(table.querySelector('.js-second').classList.contains('female')).toEqual(true);
+    expect(table.querySelector(".js-first").classList.contains("male")).toEqual(
+      true
+    );
+    expect(
+      table.querySelector(".js-second").classList.contains("female")
+    ).toEqual(true);
   });
 
   it('Установит inline-стиль style="text-decoration: line-through", если значение ячейки Age меньше 18', () => {
-    const table = document.createElement('table');
+    const table = document.createElement("table");
 
     table.innerHTML = `
             <thead>
@@ -123,7 +137,9 @@ describe('4-module-3-task', () => {
         `;
 
     highlight(table);
-    expect(table.querySelector('.js-first').style.textDecoration).toEqual('');
-    expect(table.querySelector('.js-second').style.textDecoration).toEqual('line-through');
+    expect(table.querySelector(".js-first").style.textDecoration).toEqual("");
+    expect(table.querySelector(".js-second").style.textDecoration).toEqual(
+      "line-through"
+    );
   });
 });
