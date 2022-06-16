@@ -1,53 +1,39 @@
-let rows = [
-  {
-    name: "Ilia",
-    age: 25,
-    salary: 1000,
-    city: "Petrozavodsk",
-  },
-  {
-    name: "Vasya",
-    age: 14,
-    salary: 1500,
-    city: "Moscow",
-  },
-  {
-    name: "Ivan",
-    age: 22,
-    salary: 100,
-    city: "Bryansk",
-  },
-  {
-    name: "Petya",
-    age: 45,
-    salary: 990,
-    city: "Chita",
-  },
-];
-
 export default class UserTable {
-  #name = "name";
-  #age = "age";
-  #salary = "salary";
-  #city = "city";
+  #items = [];
 
-  elem = document.body
-    .querySelector("table")
-    .insertAdjacentHTML("afterBegin", this.#template());
+  constructor(rows) {
+    this.#items = rows;
+    this.elem = this.#template();
+    this.elem.addEventListener("click", this.#onButtonClick);
+  }
+
+  #onButtonClick = (event) => {
+    if (event.target.tagName == "BUTTON") {
+      event.target.closest("tr").remove();
+    }
+  };
 
   #template() {
-    return `
+    let parentTable = document.createElement("div");
+    parentTable.innerHTML = `
     <table>
       <thead>
         <tr>
-          <th>"Имя"</th><th>"Возраст"</th><th>"Зарплата"</th><th>"Город"</th>
+          <th>Имя</th>
+          <th>Возраст</th>
+          <th>Зарплата</th>
+          <th>Город</th>
         </tr>
       </thead>
-    </table> `;
+        <tbody>
+          ${this.#items
+            .map(
+              (item) =>
+                `<tr><td>${item.name}</td><td>${item.age}</td><td>${item.salary}</td><td>${item.city}</td><td><button>X</button></td></tr>`
+            )
+            .join("")}
+        </tbody>
+    </table>`;
+    return parentTable.firstElementChild;
   }
-  // constructor(rows) {
-  // this.name = rows;
-  // }
 }
-
-console.log(rows.length);

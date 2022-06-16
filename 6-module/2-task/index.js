@@ -6,7 +6,6 @@ export default class ProductCard {
   #category = "";
   #image = "";
   #id = "";
-  #parent = document.querySelector("#holder");
 
   constructor(product) {
     this.#name = product.name;
@@ -14,15 +13,7 @@ export default class ProductCard {
     this.#category = product.category;
     this.#image = product.image;
     this.#id = product.id;
-    this.elem = this.#myCard();
-    this.elem
-      .querySelector(".card__button")
-      .addEventListener("click", this.#onButtonClick);
-  }
-
-  #myCard() {
-    const div = document.createElement("div");
-    div.innerHTML = `
+    this.elem = createElement(`
       <div class="card">
         <div class="card__top">
           <img src="/assets/images/products/${
@@ -36,28 +27,19 @@ export default class ProductCard {
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
           </button>
         </div>
-      </div>`;
-    return div.firstElementChild;
-  }
-
-  get #cardSelector() {
-    return this.#parent.querySelector(".card");
-  }
-
-  get #button() {
-    return this.cardSelector.querySelector(".card__button");
+      </div>`);
+    this.elem
+      .querySelector(".card__button")
+      .addEventListener("click", this.#onButtonClick);
+    this.elem.addEventListener("product-add", (event) => console.log(event));
   }
 
   #onButtonClick = () => {
-    // alert("click");
-
     const newEvent = new CustomEvent("product-add", {
       detail: this.#id,
       bubbles: true,
     });
 
     this.elem.dispatchEvent(newEvent);
-
-    this.elem.addEventListener("product-add", (event) => console.log(event));
   };
 }
