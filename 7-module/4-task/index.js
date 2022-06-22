@@ -27,12 +27,7 @@ export default class StepSlider {
       .querySelector(".slider__steps > span")
       .classList.add("slider__step-active");
     this.eventListenersOuter = this.#eventListenersInner();
-    this.elem.querySelector(".slider__thumb").ondragstart = (event) =>
-      event.preventDefault();
-    this.elem.querySelector(".slider__thumb").onpointerdown = (event) =>
-      event.preventDefault();
-    this.elem.querySelector(".slider__thumb").onpointermove = (event) =>
-      event.preventDefault();
+    this.defaultStoppers = this.#defaultDragStopper();
   }
 
   get #sliderGetter() {
@@ -55,10 +50,23 @@ export default class StepSlider {
     return this.#sliderGetter.clientWidth;
   }
 
+  get #sliderCoords() {
+    return this.#sliderGetter.getBoundingClientRect();
+  }
+
   #defaultDragStopper = () => {
-    this.#sliderThumbGetter.ondragstart = (event) => {
+    this.elem.querySelector(".slider__thumb").ondragstart = (event) => {
       event.preventDefault();
     };
+
+    this.elem.querySelector(".slider__thumb").ondragstart = (event) =>
+      event.preventDefault();
+
+    this.elem.querySelector(".slider__thumb").onpointerdown = (event) =>
+      event.preventDefault();
+
+    this.elem.querySelector(".slider__thumb").onpointermove = (event) =>
+      event.preventDefault();
   };
 
   #eventListenersInner() {
@@ -69,56 +77,78 @@ export default class StepSlider {
       .addEventListener("pointerdown", this.#thumbDragNDropFunction);
   }
 
-  #thumbDragNDropFunction = () => {
-    const onMove = (event) => {
-      this.elem.classList.add("slider_dragging");
-
-      const sliderCoords = this.#sliderGetter.getBoundingClientRect();
-      const sliderWidth = this.#sliderWidth;
-      const coordsX = event.x - sliderCoords.x;
-      const progressLineWidth = (coordsX / sliderWidth) * 100;
-
-      this.#valueChangerFunction();
-      this.#addActiveClassFunction();
-
-      this.#sliderThumbGetter.style.left = progressLineWidth + "%";
-      this.#sliderProgressGetter.style.width = progressLineWidth + "%";
-
-      if (progressLineWidth < 0) {
-        this.#sliderProgressGetter.style.width = 0;
-        this.#sliderThumbGetter.style.left = 0;
-      }
-
-      if (progressLineWidth >= 100) {
-        this.#sliderProgressGetter.style.width = "100%";
-        this.#sliderThumbGetter.style.left = "100%";
-      }
-    };
-
-    document.addEventListener("pointermove", onMove);
-
-    document.addEventListener(
-      "pointerup",
-      () => {
-        this.elem.classList.remove("slider_dragging");
-        document.removeEventListener("pointermove", onMove);
-
-        const newEvent = new CustomEvent("slider-change", {
-          detail: this.#value,
-          bubbles: true,
-        });
-
-        this.#sliderGetter.dispatchEvent(newEvent);
-      },
-      { once: true }
+  #pointerUpFunction = () => {
+    const sliderWidth = this.#sliderWidth;
+    const sliderCoords = this.#sliderCoords;
+    const coordsX = event.x - sliderCoords.x;
+    const scaleDivision = 100 / (this.#stepsAmount - 1);
+    const calculatedIntegerNumber = Math.round(
+      (coordsX / sliderWidth) * (this.#stepsAmount - 1)
     );
+
+    if (
+      calculatedIntegerNumber >= 0 &&
+      calculatedIntegerNumber < this.#stepsAmount
+    ) {
+      this.#sliderProgressGetter.style.width =
+        calculatedIntegerNumber * scaleDivision + "%";
+      this.#sliderThumbGetter.style.left =
+        calculatedIntegerNumber * scaleDivision + "%";
+    }
+
+    this.elem.classList.remove("slider_dragging");
+    document.removeEventListener("pointermove", this.#onMoveFunction);
+
+    const newEvent = new CustomEvent("slider-change", {
+      detail: this.#value,
+      bubbles: true,
+    });
+
+    this.#sliderGetter.dispatchEvent(newEvent);
+  };
+
+  #onMoveFunction = () => {
+    const sliderWidth = this.#sliderWidth;
+    const sliderCoords = this.#sliderCoords;
+    this.elem.classList.add("slider_dragging");
+
+    const coordsX = event.x - sliderCoords.x;
+    const progressLineWidth = (coordsX / sliderWidth) * 100;
+
+    this.#sliderThumbGetter.style.left = progressLineWidth + "%";
+    this.#sliderProgressGetter.style.width = progressLineWidth + "%";
+
+    this.#valueChangerFunction();
+    this.#addActiveClassFunction();
+
+    if (progressLineWidth < 0) {
+      this.#sliderProgressGetter.style.width = 0;
+      this.#sliderThumbGetter.style.left = 0;
+    }
+
+    if (progressLineWidth >= 100) {
+      this.#sliderProgressGetter.style.width = "100%";
+      this.#sliderThumbGetter.style.left = "100%";
+    }
+  };
+
+  #thumbDragNDropFunction = () => {
+    const sliderWidth = this.#sliderWidth;
+    const sliderCoords = this.#sliderCoords;
+    const coordsX = event.x - sliderCoords.x;
+
+    document.addEventListener("pointermove", this.#onMoveFunction);
+
+    document.addEventListener("pointerup", this.#pointerUpFunction, {
+      once: true,
+    });
   };
 
   #scaleChangerInnerFunction = () => {
     const sliderProgressSelector = this.#sliderProgressGetter;
     const sliderThumbSelector = this.#sliderThumbGetter;
-    const sliderCoords = this.#sliderGetter.getBoundingClientRect();
-    const sliderWidth = this.#sliderGetter.clientWidth;
+    const sliderCoords = this.#sliderCoords;
+    const sliderWidth = this.#sliderWidth;
     const clickCoordsX = event.x - sliderCoords.x;
     const calculatedIntegerNumber = Math.round(
       (clickCoordsX / sliderWidth) * (this.#stepsAmount - 1)
@@ -145,9 +175,11 @@ export default class StepSlider {
     const sliderValueSelector =
       this.#sliderGetter.querySelector(".slider__value");
 
-    this.#value = calculatedIntegerNumber;
+    if (clickCoordsX > 0 && clickCoordsX <= sliderWidth) {
+      this.#value = calculatedIntegerNumber;
 
-    sliderValueSelector.innerHTML = `${calculatedIntegerNumber}`;
+      sliderValueSelector.innerHTML = `${calculatedIntegerNumber}`;
+    }
   };
 
   #addActiveClassFunction = () => {
@@ -164,11 +196,13 @@ export default class StepSlider {
 
     const allSpansSelector = this.#sliderStepsGetter.querySelectorAll("span");
 
-    stepActive.classList.remove("slider__step-active");
+    if (clickCoordsX > 0 && clickCoordsX <= sliderWidth) {
+      stepActive.classList.remove("slider__step-active");
 
-    allSpansSelector[calculatedIntegerNumber].classList.add(
-      "slider__step-active"
-    );
+      allSpansSelector[calculatedIntegerNumber].classList.add(
+        "slider__step-active"
+      );
+    }
   };
 
   #customDispatchEventFunction = () => {
