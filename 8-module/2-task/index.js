@@ -16,6 +16,7 @@ export default class ProductGrid {
 
   updateFilter = (filter) => {
     const gridInnerSelector = this.elem.querySelector(".products-grid__inner");
+
     gridInnerSelector.innerHTML = "";
 
     if (Object.keys(filter)[0] == "noNuts") {
@@ -60,6 +61,7 @@ export default class ProductGrid {
   #cardMaker = () => {
     for (let product of this.products) {
       this.card = new ProductCard(product);
+
       this.elem.querySelector(".products-grid__inner").append(this.card.elem);
     }
   };

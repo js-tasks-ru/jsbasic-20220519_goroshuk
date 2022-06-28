@@ -14,25 +14,29 @@ export default class Cart {
 
     if (!arrWithNames.includes(product.name)) {
       this.cartItems.push({ product });
+
       this.cartItems[this.cartItems.length - 1].count = 1;
     } else {
       let productInCartNumber = arrWithNames.indexOf(product.name);
+
       this.cartItems[productInCartNumber].count++;
     }
 
-    this.onProductUpdate(product);
+    this.onProductUpdate();
   }
 
   updateProductCount(productId, amount) {
     let arrWithId = this.cartItems.map((item) => item.product.id);
+
     let itemNumberWithId = arrWithId.indexOf(productId);
 
     this.cartItems[itemNumberWithId].count += amount;
+
     if (this.cartItems[itemNumberWithId].count == 0) {
       this.cartItems = this.cartItems.filter((item) => item.count > 0);
     }
 
-    this.onProductUpdate(this.cartItems[itemNumberWithId]);
+    this.onProductUpdate(productId);
   }
 
   isEmpty() {
