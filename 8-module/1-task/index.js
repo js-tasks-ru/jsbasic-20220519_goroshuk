@@ -40,6 +40,7 @@ export default class CartIcon {
 
   addEventListeners() {
     document.addEventListener("scroll", () => this.updatePosition());
+
     window.addEventListener("resize", () => this.updatePosition());
   }
 
@@ -52,11 +53,15 @@ export default class CartIcon {
 
     if (this.elem.classList.contains("cart-icon_visible")) {
       const containerSelectorCoords = this.#firstDivContainerCoords;
+
       const cartCoords = cartSelector.getBoundingClientRect();
+
       const windowWidth = document.documentElement.clientWidth;
 
       cartSelector.style.position = "absolute";
+
       cartSelector.style.left = "auto";
+
       cartSelector.style.zIndex = "";
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
@@ -65,16 +70,15 @@ export default class CartIcon {
           windowWidth
         ) {
           cartSelector.style.position = "fixed";
+
           cartSelector.style.left =
             windowWidth - cartSelector.offsetWidth - 10 + "px";
-          cartSelector.style.zIndex = 99;
 
-          console.log(cartCoords.left);
+          cartSelector.style.zIndex = 99;
         } else {
           cartSelector.style.position = "fixed";
-          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
 
-          console.log(cartCoords.left);
+          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
         }
       }
     }
