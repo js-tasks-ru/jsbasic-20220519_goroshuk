@@ -5,6 +5,10 @@ export default class CartIcon {
     this.render();
 
     this.addEventListeners();
+    this.firstDivContainerCoords = () => {
+      return document.querySelector(".container").getBoundingClientRect();
+    };
+    // console.log(this.firstDivContainerCoords());
   }
 
   render() {
@@ -44,17 +48,17 @@ export default class CartIcon {
     window.addEventListener("resize", () => this.updatePosition());
   }
 
-  get #firstDivContainerCoords() {
-    return document.body.querySelector("header").getBoundingClientRect();
-  }
+  // get #firstDivContainerCoords() {
+  //   return document.querySelector("header").getBoundingClientRect();
+  // }
 
   updatePosition() {
     const cartSelector = this.elem;
 
-    if (this.elem.classList.contains("cart-icon_visible")) {
-      const containerSelectorCoords = this.#firstDivContainerCoords;
+    // console.log(this.#firstDivContainerCoords);
 
-      const cartCoords = cartSelector.getBoundingClientRect();
+    if (this.elem.classList.contains("cart-icon_visible")) {
+      const containerSelectorCoords = this.firstDivContainerCoords();
 
       const windowWidth = document.documentElement.clientWidth;
 
