@@ -45,7 +45,7 @@ export default class CartIcon {
   }
 
   get #firstDivContainerCoords() {
-    return document.body.querySelector(".container").getBoundingClientRect();
+    return document.body.querySelector("header").getBoundingClientRect();
   }
 
   updatePosition() {
