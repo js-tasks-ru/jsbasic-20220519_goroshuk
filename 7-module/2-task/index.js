@@ -74,7 +74,7 @@ export default class Modal {
     const target = event.target;
 
     if (target.closest(".modal__close")) {
-      target.closest(".modal").remove();
+      this.elem.remove();
 
       document.body.classList.remove("is-modal-open");
 
