@@ -11,6 +11,10 @@ export default class CartIcon {
     this.elem = createElement('<div class="cart-icon"></div>');
   }
 
+  get containerRightCoords() {
+    return document.body.querySelector("header").getBoundingClientRect().right;
+  }
+
   update(cart) {
     if (!cart.isEmpty()) {
       this.elem.classList.add("cart-icon_visible");
@@ -39,24 +43,52 @@ export default class CartIcon {
   }
 
   addEventListeners() {
-    document.addEventListener("scroll", () => this.updatePosition());
+    document.addEventListener("scroll", () => {
+      const cartSelector = this.elem;
+
+      const containerSelectorCoords = this.containerRightCoords;
+      console.log(containerSelectorCoords);
+
+      if (this.elem.classList.contains("cart-icon_visible")) {
+        const windowWidth = document.documentElement.clientWidth;
+
+        cartSelector.style.position = "absolute";
+
+        cartSelector.style.left = "auto";
+
+        cartSelector.style.zIndex = "";
+
+        if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
+          if (
+            containerSelectorCoords + 30 + cartSelector.offsetWidth >
+            windowWidth
+          ) {
+            cartSelector.style.position = "fixed";
+
+            cartSelector.style.left =
+              windowWidth - cartSelector.offsetWidth - 10 + "px";
+
+            cartSelector.style.zIndex = 99;
+          } else {
+            cartSelector.style.position = "fixed";
+
+            cartSelector.style.left = containerSelectorCoords + 20 + "px";
+          }
+        }
+      }
+    });
 
     window.addEventListener("resize", () => this.updatePosition());
   }
 
-  async updatePosition() {
+  updatePosition() {
     const cartSelector = this.elem;
 
-    const containerSelectorCoords = await document
-      .querySelector(".container")
-      .getBoundingClientRect();
+    const containerSelectorCoords = this.containerRightCoords;
+    console.log(containerSelectorCoords);
 
     if (this.elem.classList.contains("cart-icon_visible")) {
       const windowWidth = document.documentElement.clientWidth;
-
-      const containerSelectorCoords = await document
-        .querySelector(".container")
-        .getBoundingClientRect();
 
       cartSelector.style.position = "absolute";
 
@@ -65,11 +97,8 @@ export default class CartIcon {
       cartSelector.style.zIndex = "";
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
-        const containerSelectorCoords = await document
-          .querySelector(".container")
-          .getBoundingClientRect();
         if (
-          containerSelectorCoords.right + 30 + cartSelector.offsetWidth >
+          containerSelectorCoords + 30 + cartSelector.offsetWidth >
           windowWidth
         ) {
           cartSelector.style.position = "fixed";
@@ -81,7 +110,7 @@ export default class CartIcon {
         } else {
           cartSelector.style.position = "fixed";
 
-          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
+          cartSelector.style.left = containerSelectorCoords + 20 + "px";
         }
       }
     }
