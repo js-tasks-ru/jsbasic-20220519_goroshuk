@@ -11,13 +11,16 @@ export default class CartIcon {
     this.elem = createElement('<div class="cart-icon"></div>');
   }
 
-  get containerRightCoords() {
-    return document.body.querySelector("header").getBoundingClientRect().right;
-  }
+  // get containerRightCoords() {
+  //   return document.body.querySelector("header").getBoundingClientRect().right;
+  // }
 
   update(cart) {
     if (!cart.isEmpty()) {
-      this.elem.classList.add("cart-icon_visible");
+      // this.elem.classList.add("cart-icon_visible");
+      document.body
+        .querySelector(".cart-icon")
+        .classList.add("cart-icon_visible");
 
       this.elem.innerHTML = `
         <div class="cart-icon__inner">
@@ -29,8 +32,11 @@ export default class CartIcon {
 
       this.updatePosition();
 
-      this.elem.classList.add("shake");
-      this.elem.addEventListener(
+      // this.elem.classList.add("shake");
+      document.body.querySelector(".cart-icon").classList.add("shake");
+
+      // this.elem.addEventListener
+      document.body.querySelector(".cart-icon").addEventListener(
         "transitionend",
         () => {
           this.elem.classList.remove("shake");
@@ -38,23 +44,31 @@ export default class CartIcon {
         { once: true }
       );
     } else {
-      this.elem.classList.remove("cart-icon_visible");
+      // this.elem.classList.remove("cart-icon_visible");
+      document.body
+        .querySelector(".cart-icon")
+        .classList.remove("cart-icon_visible");
     }
   }
 
   addEventListeners() {
-    document.addEventListener("scroll", () => this.updatePosition());
+    document.addEventListener("scroll", this.updatePosition);
 
-    window.addEventListener("resize", () => this.updatePosition());
+    window.addEventListener("resize", this.updatePosition);
   }
 
   updatePosition() {
-    const cartSelector = this.elem;
+    const cartSelector = document.body.querySelector(".cart-icon");
 
-    const containerSelectorCoords = this.containerRightCoords;
-    console.log(containerSelectorCoords);
+    const containerSelectorCoords = document.body
+      .querySelector("header")
+      .getBoundingClientRect().right;
 
-    if (this.elem.classList.contains("cart-icon_visible")) {
+    if (
+      document.body
+        .querySelector(".cart-icon")
+        .classList.contains("cart-icon_visible")
+    ) {
       const windowWidth = document.documentElement.clientWidth;
 
       cartSelector.style.position = "absolute";
