@@ -5,9 +5,6 @@ export default class CartIcon {
     this.render();
 
     this.addEventListeners();
-    this.firstDivContainerCoords = () => {
-      return document.querySelector(".container").getBoundingClientRect().right;
-    };
   }
 
   render() {
