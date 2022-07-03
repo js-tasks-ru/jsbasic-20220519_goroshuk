@@ -64,10 +64,10 @@ export default class CartIcon {
     // );
 
     if (this.elem.classList.contains("cart-icon_visible")) {
-      console.log(document.body.querySelector(".cart-icon"));
+      console.log(this.elem.closest(".container"));
 
-      const containerSelectorCoords = document.body
-        .querySelector(".container")
+      const containerSelectorCoords = this.elem
+        .closest(".container")
         .getBoundingClientRect().right;
 
       const windowWidth = document.documentElement.clientWidth;
