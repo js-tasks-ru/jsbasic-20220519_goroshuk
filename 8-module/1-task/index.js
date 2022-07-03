@@ -54,6 +54,10 @@ export default class CartIcon {
     if (this.elem.classList.contains("cart-icon_visible")) {
       const windowWidth = document.documentElement.clientWidth;
 
+      const containerSelectorCoords = await document
+        .querySelector(".container")
+        .getBoundingClientRect();
+
       cartSelector.style.position = "absolute";
 
       cartSelector.style.left = "auto";
@@ -61,6 +65,9 @@ export default class CartIcon {
       cartSelector.style.zIndex = "";
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
+        const containerSelectorCoords = await document
+          .querySelector(".container")
+          .getBoundingClientRect();
         if (
           containerSelectorCoords.right + 30 + cartSelector.offsetWidth >
           windowWidth
