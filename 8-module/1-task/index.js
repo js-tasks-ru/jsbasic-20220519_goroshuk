@@ -43,40 +43,7 @@ export default class CartIcon {
   }
 
   addEventListeners() {
-    document.addEventListener("scroll", () => {
-      const cartSelector = this.elem;
-
-      const containerSelectorCoords = this.containerRightCoords;
-      console.log(containerSelectorCoords);
-
-      if (this.elem.classList.contains("cart-icon_visible")) {
-        const windowWidth = document.documentElement.clientWidth;
-
-        cartSelector.style.position = "absolute";
-
-        cartSelector.style.left = "auto";
-
-        cartSelector.style.zIndex = "";
-
-        if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
-          if (
-            containerSelectorCoords + 30 + cartSelector.offsetWidth >
-            windowWidth
-          ) {
-            cartSelector.style.position = "fixed";
-
-            cartSelector.style.left =
-              windowWidth - cartSelector.offsetWidth - 10 + "px";
-
-            cartSelector.style.zIndex = 99;
-          } else {
-            cartSelector.style.position = "fixed";
-
-            cartSelector.style.left = containerSelectorCoords + 20 + "px";
-          }
-        }
-      }
-    });
+    document.addEventListener("scroll", () => this.updatePosition());
 
     window.addEventListener("resize", () => this.updatePosition());
   }
