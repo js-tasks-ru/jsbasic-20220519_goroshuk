@@ -52,7 +52,7 @@ export default class CartIcon {
 
     const containerSelectorCoords = await document
       .querySelector(".container")
-      .getBoundingClientRect().right;
+      .getBoundingClientRect();
 
     if (this.elem.classList.contains("cart-icon_visible")) {
       const windowWidth = document.documentElement.clientWidth;
@@ -65,7 +65,7 @@ export default class CartIcon {
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
         if (
-          containerSelectorCoords + 30 + cartSelector.offsetWidth >
+          containerSelectorCoords.right + 30 + cartSelector.offsetWidth >
           windowWidth
         ) {
           cartSelector.style.position = "fixed";
@@ -77,7 +77,7 @@ export default class CartIcon {
         } else {
           cartSelector.style.position = "fixed";
 
-          cartSelector.style.left = containerSelectorCoords + 20 + "px";
+          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
         }
       }
     }
