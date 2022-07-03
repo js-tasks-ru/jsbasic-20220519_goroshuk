@@ -2,7 +2,7 @@ import createElement from "../../assets/lib/create-element.js";
 
 export default class StepSlider {
   #stepsAmount = "";
-  #value = "";
+  value = "";
 
   constructor({ steps, value = 0 }) {
     this.elem = createElement(`
@@ -21,13 +21,33 @@ export default class StepSlider {
       </div>
   </div>`);
     this.#stepsAmount = steps;
-    this.#value = value;
+    this.value = value;
     this.spanAdder = this.#spanAdder();
-    this.elem
-      .querySelector(".slider__steps > span")
-      .classList.add("slider__step-active");
-    this.eventListenersOuter = this.#eventListenersInner();
-    this.defaultStoppers = this.#defaultDragStopper();
+    this.#eventListenersInner(); // deleted this.eventListenersOuter
+    this.#defaultDragStopper(); // deleted this.defaultStoppers
+    this.#sliderStartPosition();
+  }
+
+  #sliderStartPosition() {
+    if (this.value < 0) {
+      this.value = 0;
+    }
+
+    if (this.value >= this.#stepsAmount) {
+      this.value = this.#stepsAmount - 1;
+    }
+
+    this.elem.querySelector(".slider__progress").style.width =
+      this.value * (100 / (this.#stepsAmount - 1)) + "%";
+
+    this.elem.querySelector(".slider__thumb").style.left =
+      this.value * (100 / (this.#stepsAmount - 1)) + "%";
+
+    this.elem.querySelector(".slider__value").innerHTML = this.value;
+
+    const span = this.elem.querySelectorAll(".slider__steps span");
+
+    span[this.value].classList.add("slider__step-active");
   }
 
   get #sliderGetter() {
@@ -100,7 +120,7 @@ export default class StepSlider {
     document.removeEventListener("pointermove", this.#onMoveFunction);
 
     const newEvent = new CustomEvent("slider-change", {
-      detail: this.#value,
+      detail: this.value,
       bubbles: true,
     });
 
@@ -176,7 +196,7 @@ export default class StepSlider {
       this.#sliderGetter.querySelector(".slider__value");
 
     if (clickCoordsX > 0 && clickCoordsX <= sliderWidth) {
-      this.#value = calculatedIntegerNumber;
+      this.value = calculatedIntegerNumber;
 
       sliderValueSelector.innerHTML = `${calculatedIntegerNumber}`;
     }

@@ -19,20 +19,44 @@ export default class ProductGrid {
 
     gridInnerSelector.innerHTML = "";
 
-    if (Object.keys(filter)[0] == "noNuts") {
-      this.filters.noNuts = Object.values(filter)[0];
+    // if (Object.keys(filter)[0] == "noNuts") {
+    //   this.filters.noNuts = Object.values(filter)[0];
+    // }
+
+    if (Object.keys(filter).includes("noNuts")) {
+      const position = Object.keys(filter).indexOf("noNuts");
+
+      this.filters.noNuts = Object.values(filter)[position];
     }
 
-    if (Object.keys(filter)[0] == "vegeterianOnly") {
-      this.filters.vegeterianOnly = Object.values(filter)[0];
+    // if (Object.keys(filter)[0] == "vegeterianOnly") {
+    //   this.filters.vegeterianOnly = Object.values(filter)[0];
+    // }
+
+    if (Object.keys(filter).includes("vegeterianOnly")) {
+      const position = Object.keys(filter).indexOf("vegeterianOnly");
+
+      this.filters.vegeterianOnly = Object.values(filter)[position];
     }
 
-    if (Object.keys(filter)[0] == "maxSpiciness") {
-      this.filters.maxSpiciness = Object.values(filter)[0];
+    // if (Object.keys(filter)[0] == "maxSpiciness") {
+    //   this.filters.maxSpiciness = Object.values(filter)[0];
+    // }
+
+    if (Object.keys(filter).includes("maxSpiciness")) {
+      const position = Object.keys(filter).indexOf("maxSpiciness");
+
+      this.filters.maxSpiciness = Object.values(filter)[position];
     }
 
-    if (Object.keys(filter)[0] == "category") {
-      this.filters.category = Object.values(filter)[0];
+    // if (Object.keys(filter)[0] == "category") {
+    //   this.filters.category = Object.values(filter)[0];
+    // }
+
+    if (Object.keys(filter).includes("category")) {
+      const position = Object.keys(filter).indexOf("category");
+
+      this.filters.category = Object.values(filter)[position];
     }
 
     for (let product of this.products) {
@@ -48,8 +72,8 @@ export default class ProductGrid {
         if (!product.vegeterian) continue;
       }
 
-      if (this.filters.maxSpiciness) {
-        if (product.spiciness > this.filters.maxSpiciness) continue;
+      if (this.filters.maxSpiciness || this.filters.maxSpiciness == 0) {
+        if (this.filters.maxSpiciness < product.spiciness) continue;
       }
 
       this.card = new ProductCard(product);

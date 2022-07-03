@@ -6,9 +6,8 @@ export default class CartIcon {
 
     this.addEventListeners();
     this.firstDivContainerCoords = () => {
-      return document.querySelector(".container").getBoundingClientRect();
+      return document.querySelector(".container").getBoundingClientRect().right;
     };
-    // console.log(this.firstDivContainerCoords());
   }
 
   render() {
@@ -48,14 +47,8 @@ export default class CartIcon {
     window.addEventListener("resize", () => this.updatePosition());
   }
 
-  // get #firstDivContainerCoords() {
-  //   return document.querySelector("header").getBoundingClientRect();
-  // }
-
   updatePosition() {
     const cartSelector = this.elem;
-
-    // console.log(this.#firstDivContainerCoords);
 
     if (this.elem.classList.contains("cart-icon_visible")) {
       const containerSelectorCoords = this.firstDivContainerCoords();
@@ -70,7 +63,7 @@ export default class CartIcon {
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
         if (
-          containerSelectorCoords.right + 30 + cartSelector.offsetWidth >
+          containerSelectorCoords + 30 + cartSelector.offsetWidth >
           windowWidth
         ) {
           cartSelector.style.position = "fixed";
@@ -82,7 +75,7 @@ export default class CartIcon {
         } else {
           cartSelector.style.position = "fixed";
 
-          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
+          cartSelector.style.left = containerSelectorCoords + 20 + "px";
         }
       }
     }
