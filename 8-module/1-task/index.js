@@ -64,7 +64,7 @@ export default class CartIcon {
     // );
 
     if (this.elem.classList.contains("cart-icon_visible")) {
-      console.log(this.elem.closest(".container"));
+      const cartSelector = this.elem;
 
       const containerSelectorCoords = this.elem
         .closest(".container")
