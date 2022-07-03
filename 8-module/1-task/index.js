@@ -57,18 +57,19 @@ export default class CartIcon {
     window.addEventListener("resize", this.updatePosition);
   }
 
-  updatePosition() {
+  updatePosition = () => {
     const cartSelector = document.body.querySelector(".cart-icon");
+    // console.log(
+    //   getComputedStyle(document.body.querySelector(".cart-icon")).display
+    // );
 
-    const containerSelectorCoords = document.body
-      .querySelector("header")
-      .getBoundingClientRect().right;
+    if (this.elem.classList.contains("cart-icon_visible")) {
+      console.log(document.body.querySelector(".cart-icon"));
 
-    if (
-      document.body
-        .querySelector(".cart-icon")
-        .classList.contains("cart-icon_visible")
-    ) {
+      const containerSelectorCoords = document.body
+        .querySelector(".container")
+        .getBoundingClientRect().right;
+
       const windowWidth = document.documentElement.clientWidth;
 
       cartSelector.style.position = "absolute";
@@ -78,6 +79,10 @@ export default class CartIcon {
       cartSelector.style.zIndex = "";
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
+        const containerSelectorCoords = document.body
+          .querySelector(".container")
+          .getBoundingClientRect().right;
+
         if (
           containerSelectorCoords + 30 + cartSelector.offsetWidth >
           windowWidth
@@ -95,5 +100,5 @@ export default class CartIcon {
         }
       }
     }
-  }
+  };
 }
