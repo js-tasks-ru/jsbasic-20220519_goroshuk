@@ -47,12 +47,14 @@ export default class CartIcon {
     window.addEventListener("resize", () => this.updatePosition());
   }
 
-  updatePosition() {
+  async updatePosition() {
     const cartSelector = this.elem;
 
-    if (this.elem.classList.contains("cart-icon_visible")) {
-      const containerSelectorCoords = this.firstDivContainerCoords();
+    const containerSelectorCoords = await document
+      .querySelector(".container")
+      .getBoundingClientRect().right;
 
+    if (this.elem.classList.contains("cart-icon_visible")) {
       const windowWidth = document.documentElement.clientWidth;
 
       cartSelector.style.position = "absolute";
