@@ -5,19 +5,22 @@ export default class CartIcon {
     this.render();
 
     this.addEventListeners();
-    this.firstDivContainerCoords = () => {
-      return document.querySelector(".container").getBoundingClientRect();
-    };
-    // console.log(this.firstDivContainerCoords());
   }
 
   render() {
     this.elem = createElement('<div class="cart-icon"></div>');
   }
 
+  // get containerRightCoords() {
+  //   return document.body.querySelector("header").getBoundingClientRect().right;
+  // }
+
   update(cart) {
     if (!cart.isEmpty()) {
-      this.elem.classList.add("cart-icon_visible");
+      // this.elem.classList.add("cart-icon_visible");
+      document.body
+        .querySelector(".cart-icon")
+        .classList.add("cart-icon_visible");
 
       this.elem.innerHTML = `
         <div class="cart-icon__inner">
@@ -29,8 +32,11 @@ export default class CartIcon {
 
       this.updatePosition();
 
-      this.elem.classList.add("shake");
-      this.elem.addEventListener(
+      // this.elem.classList.add("shake");
+      document.body.querySelector(".cart-icon").classList.add("shake");
+
+      // this.elem.addEventListener
+      document.body.querySelector(".cart-icon").addEventListener(
         "transitionend",
         () => {
           this.elem.classList.remove("shake");
@@ -38,27 +44,31 @@ export default class CartIcon {
         { once: true }
       );
     } else {
-      this.elem.classList.remove("cart-icon_visible");
+      // this.elem.classList.remove("cart-icon_visible");
+      document.body
+        .querySelector(".cart-icon")
+        .classList.remove("cart-icon_visible");
     }
   }
 
   addEventListeners() {
-    document.addEventListener("scroll", () => this.updatePosition());
+    document.addEventListener("scroll", this.updatePosition);
 
-    window.addEventListener("resize", () => this.updatePosition());
+    window.addEventListener("resize", this.updatePosition);
   }
 
-  // get #firstDivContainerCoords() {
-  //   return document.querySelector("header").getBoundingClientRect();
-  // }
-
-  updatePosition() {
-    const cartSelector = this.elem;
-
-    // console.log(this.#firstDivContainerCoords);
+  updatePosition = () => {
+    const cartSelector = document.body.querySelector(".cart-icon");
+    // console.log(
+    //   getComputedStyle(document.body.querySelector(".cart-icon")).display
+    // );
 
     if (this.elem.classList.contains("cart-icon_visible")) {
-      const containerSelectorCoords = this.firstDivContainerCoords();
+      const cartSelector = this.elem;
+
+      const containerSelectorCoords = this.elem
+        .closest(".container")
+        .getBoundingClientRect().right;
 
       const windowWidth = document.documentElement.clientWidth;
 
@@ -69,8 +79,12 @@ export default class CartIcon {
       cartSelector.style.zIndex = "";
 
       if (pageYOffset > cartSelector.offsetTop && windowWidth > 767) {
+        const containerSelectorCoords = document.body
+          .querySelector(".container")
+          .getBoundingClientRect().right;
+
         if (
-          containerSelectorCoords.right + 30 + cartSelector.offsetWidth >
+          containerSelectorCoords + 30 + cartSelector.offsetWidth >
           windowWidth
         ) {
           cartSelector.style.position = "fixed";
@@ -82,9 +96,9 @@ export default class CartIcon {
         } else {
           cartSelector.style.position = "fixed";
 
-          cartSelector.style.left = containerSelectorCoords.right + 20 + "px";
+          cartSelector.style.left = containerSelectorCoords + 20 + "px";
         }
       }
     }
-  }
+  };
 }
